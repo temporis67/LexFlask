@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Acta Borussica LLM Demonstrator {% endblock %}</h1>
+
+    <p>Dieses Demo zeigt die Reaktion eines Large Language Models vor und nach dem "Erlernen" spezifischer Inhalte.
+        <ul>
+        <li>Stellen Sie zunächst dem untrainierten System eine Frage. </li>
+        <li>Anschließend wählen Sie einen Text, um den die Wissensbasis erweitert werden soll.</li>
+        <li>Danach befragen Sie das System erneut und vergleichen die Antworten.</li>
+        </ul>
+    </p>
+
+    <form action = "{{ url_for('step1')}}" method = "POST">
+         <p>Ihre Frage <input type = "text" name = "question" /></p>
+         <p><input type = "submit"/></p>
+      </form>
+
+
+{% endblock %}
