@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Acta Borussica LLM Demonstrator {% endblock %}</h1>
+    <h2>Model MIT Zusatzwissen</h2>
+
+    <p>Unter Einbeziehung der neuen Daten antwortet das Model i.d.R. korrekt:</p>
+  <table>
+
+            <tr>
+                <th><strong>Ihre Frage:</strong></th>
+               <td> {{ question }} </td>
+            </tr>
+              <tr>
+               <th>Antwort des (trainierten) Models:</th>
+               <td> {{ answer }} </td>
+            </tr>
+                <tr>
+               <th>Antwort des (untrainierten) Models war:</th>
+               <td> {{ answer_old }} </td>
+            </tr>
+  <tr><th>Trainingstext</th><td>{{ infotext }}</td></tr>
+
+
+      </table>
+
+{% endblock %}

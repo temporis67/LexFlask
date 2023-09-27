@@ -2,14 +2,43 @@
 
 {% block content %}
     <h1>{% block title %} Acta Borussica LLM Demonstrator {% endblock %}</h1>
+    <h2>Model ohne Zusatzwissen</h2>
 
-  <table border = 1>
-         {% for key, value in result.items() %}
+  <table>
+
             <tr>
-               <th> {{ key }} </th>
-               <td> {{ value }} </td>
+                <th><strong>Ihre Frage:</strong></th>
+               <td> {{ question }} </td>
             </tr>
-         {% endfor %}
+              <tr>
+               <th>Antwort des (untrainierten) Models:</th>
+               <td> {{ answer }} </td>
+            </tr>
+
       </table>
+    <p></p>
+    <p><em>Diese Antwort ist wahrscheinlich falsch, da dem Model das spezifische Wissen fehlt.</em></p>
+    <hr/>
+
+    <p>Kopieren Sie nun hilfreichen Text in das Info-Feld und stellen Sie die Frage erneut.</p>
+    <p>Die neuen Informationen werden im nächsten Schritt zur Beantwortung herangezogen, das Model erweitert.</p>
+
+      <form action = "{{ url_for('step2')}}" method = "POST">
+         <input type="hidden" name="answer_old" value="{{ answer }}">
+         <input type = "hidden" name = "question" value="{{ question }}"/>
+         <p><textarea cols="120" rows="10" name="context">Es folgt eine Aufzählung der preußischer Persönlichkeiten mit ihren Geburtstagen und Sterbedaten:
+                Werner von Alvensleben wurde am 20.7.1840 geboren und verstarb am 19.2.1929.
+                Friedrich I. wurde am 11. Juli 1657 geboren und verstarb am 25. Februar 1713.
+                Friedrich Wilhelm I. wurde am 14. August 1688 geboren und verstarb am 31. Mai 1740.
+                Friedrich II. wurde am 24. Januar 1712 geboren und verstarb am 17. August 1786.
+                Friedrich Wilhelm II. wurde am 25. September 1744 geboren und verstarb am 16. November 1797.
+                Friedrich Wilhelm III. wurde am 3. August 1770 geboren und verstarb am 7. Juni 1840.
+                Friedrich Wilhelm IV. wurde am 15. Oktober 1795 geboren und verstarb am 2. Januar 1861.
+                Wilhelm I. wurde am 22. März 1797 geboren und verstarb am 9. März 1888.
+                Friedrich III. wurde am 18. Oktober 1831 geboren und verstarb am 15. Juni 1888.
+                Wilhelm II. wurde am 27. Januar 1859 geboren und verstarb am 4. Juni 1941.
+            </textarea> </p>
+         <p><input type = "submit" value="Absenden und erneut fragen"/></p>
+      </form>
 
 {% endblock %}
