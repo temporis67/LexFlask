@@ -1,8 +1,7 @@
 from llama_cpp import Llama
-from flask import flash
 
 import time
-import my_tools
+
 
 # LLM settings for GPU
 n_gpu_layers = 43  # Change this value based on your model and your GPU VRAM pool.
@@ -47,7 +46,7 @@ def run_step(prompt):
     time_start = time.time()
     print("Prompt: %s" % prompt)
 
-    flash("Loading model: %s" % model_name)
+    print("Loading model: %s" % model_name)
     # load the large language model file
     LLM = Llama(model_path="/main/PyCharm-Projects/lexbolo/models/gguf/" + model_name,
                 n_ctx=2048,
@@ -74,7 +73,7 @@ def run_step(prompt):
 
     time_elapsed = time.time() - time_start
     print(answer)
-    flash(f'{model_name} response time: {time_elapsed:.02f} sec')
+    print(f'{model_name} response time: {time_elapsed:.02f} sec')
 
     return answer
 
@@ -87,5 +86,4 @@ def run_step2(question, context):
     prompt = template2.format(question=question, context=context)
     return run_step(prompt)
 
-#
-# my_tools.log_benchmark(model_name, prompt, time_elapsed, result)
+

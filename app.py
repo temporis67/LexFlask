@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from flask_socketio import SocketIO
 import my_llama
 
 app = Flask(__name__)
