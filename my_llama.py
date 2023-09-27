@@ -48,7 +48,7 @@ def run_step(prompt):
 
     print("Loading model: %s" % model_name)
     # load the large language model file
-    LLM = Llama(model_path="/main/PyCharm-Projects/lexbolo/models/gguf/" + model_name,
+    LLM = Llama(model_path="models/" + model_name,
                 n_ctx=2048,
                 n_gpu_layers=n_gpu_layers,
                 n_batch=n_batch)
