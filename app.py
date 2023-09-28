@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import my_llama
+from llama_cpp import Llama
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'

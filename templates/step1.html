@@ -26,17 +26,16 @@
       <form action = "{{ url_for('step2')}}" method = "POST">
          <input type="hidden" name="answer_old" value="{{ answer }}">
          <input type = "hidden" name = "question" value="{{ question }}"/>
-         <p><textarea cols="120" rows="10" name="context">Es folgt eine Aufzählung der preußischer Persönlichkeiten mit ihren Geburtstagen und Sterbedaten:
-                Werner von Alvensleben wurde am 20.7.1840 geboren und verstarb am 19.2.1929.
-                Friedrich I. wurde am 11. Juli 1657 geboren und verstarb am 25. Februar 1713.
-                Friedrich Wilhelm I. wurde am 14. August 1688 geboren und verstarb am 31. Mai 1740.
-                Friedrich II. wurde am 24. Januar 1712 geboren und verstarb am 17. August 1786.
-                Friedrich Wilhelm II. wurde am 25. September 1744 geboren und verstarb am 16. November 1797.
-                Friedrich Wilhelm III. wurde am 3. August 1770 geboren und verstarb am 7. Juni 1840.
-                Friedrich Wilhelm IV. wurde am 15. Oktober 1795 geboren und verstarb am 2. Januar 1861.
-                Wilhelm I. wurde am 22. März 1797 geboren und verstarb am 9. März 1888.
-                Friedrich III. wurde am 18. Oktober 1831 geboren und verstarb am 15. Juni 1888.
-                Wilhelm II. wurde am 27. Januar 1859 geboren und verstarb am 4. Juni 1941.
+         <p><textarea cols="120" rows="10" name="context">
+             Werner Ludwig Alvo (Graf) von Alvensleben wurde 1840 geboren und starb 1929.
+Er war von 1880 bis 1894 von Beruf preußischer Kammerherr.
+Er war von 1894 bis 1901 von Beruf Schlosshauptmann von Quedlinburg.
+Er war von 1901 bis 1929 von Beruf Graf.
+Im Jahr 1913 erhielt er das Exzellenz-Prädikat.
+Er war von 1880 - 1929 ein erfolgreicher Landwirt und Unternehmer.
+Er beherbergte Kaiser Wilhelm II. oft zur Jagd in Neugattersleben.
+Er hatte eine Tochter mit Namen Wilhelmine.
+Kaiser Wilhelm II. war der Pate der Tochter von Werner Ludwig Alvo (Graf) von Alvensleben.
             </textarea> </p>
          <p><input type = "submit" value="Absenden und erneut fragen"/></p>
       </form>

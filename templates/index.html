@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Acta Borussica LLM Demonstrator {% endblock %}</h1>
+    <h1>{% block title %} Preussen KI Demonstrator  {% endblock %}</h1>
 
     <p>Dieses Demo zeigt die Reaktion eines Large Language Models vor und nach dem "Erlernen" spezifischer Inhalte.
         <ol>
@@ -13,7 +13,7 @@
     <p>Fangen sie an:</p>
 
     <form action = "{{ url_for('step1')}}" method = "POST">
-        <p><strong>Ihre Frage:</strong>  <input type = "text" name = "question" size="50" placeholder="Wann lebte Werner von Alvensleben?"/></p>
+        <p><strong>Ihre Frage:</strong>  <input type = "text" name = "question" size="50" value="Wann lebte Werner von Alvensleben?"/></p>
 
         <p>Für die Berechnung der Antwort werden einige Sekunden benötigt - bitte drücken Sie nicht "Reload"</p>
          <p><input type = "submit" value="Fragen"/></p>
