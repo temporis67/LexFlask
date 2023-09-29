@@ -36,7 +36,7 @@ Please ensure that your responses are socially unbiased and positive in nature.
 
 If a question does not make any sense, or is not factually coherent, 
 explain why instead of answering something not correct. 
-If you don't know the answer to a question, please don't share false information. 
+If you don't know the answer to a question, please don't share false information but answer with "I don't know.". 
 Please answer in the same language as the user.
 
 Use the following pieces of information to answer the user's question:
@@ -77,7 +77,7 @@ Friedrich III. wurde am 18. Oktober 1831 geboren und verstarb am 15. Juni 1888.
 Wilhelm II. wurde am 27. Januar 1859 geboren und verstarb am 4. Juni 1941.
 Werner von Alvensleben wurde am 20.7.1840 geboren und verstarb am 19.2.1929.
 """
-def run_step(prompt):
+def run_step(prompt, question):
 
     time_start = time.time()
     print("Prompt: %s" % prompt)
@@ -109,18 +109,23 @@ def run_step(prompt):
     answer = output["choices"][0]["text"]
 
     time_elapsed = time.time() - time_start
-    print(answer)
+    print("  Frage: %s" % question)
+    print("Antwort: %s" % answer)
     print(f'{model_name} response time: {time_elapsed:.02f} sec')
+
+    if answer.strip() == "" or str(answer).strip() == str(question).strip():
+        print("Empty answer.")
+        answer = "Das weiß ich leider nicht."
 
     return answer
 
 
 def run_step1(question):
     prompt = template0.format(question=question)
-    return run_step(prompt)
+    return run_step(prompt, question)
 
 def run_step2(question, context):
     prompt = template01.format(question=question, context=context)
-    return run_step(prompt)
+    return run_step(prompt, question)
 
 
