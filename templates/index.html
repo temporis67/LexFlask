@@ -13,7 +13,12 @@
     <p>Fangen sie an:</p>
 
     <form action = "{{ url_for('step1')}}" method = "POST">
-        <p><strong>Ihre Frage:</strong>  <input type = "text" name = "question" size="50" value="Wie lautet der vollständige Name von Werner von Alvensleben und Wilhelm II.?"/></p>
+        <p><strong>Ihre Frage:</strong><br/>
+
+            <textarea cols="100" rows="3" name="question">
+Wie lautet der volle Name von Werner von Alvensleben und Wilhelm II.?
+            </textarea>
+        </p>
 
         <p>Für die Berechnung der Antwort werden einige Sekunden benötigt - bitte drücken Sie nicht "Reload"</p>
          <p><input type = "submit" value="Fragen"/></p>
