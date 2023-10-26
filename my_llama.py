@@ -1,14 +1,12 @@
 from llama_cpp import Llama
 import time
 
-
 # LLM settings for GPU
 n_gpu_layers = 43  # Change this value based on your model and your GPU VRAM pool.
 n_batch = 512  # Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.
 
 # model_name = "spicyboros-13b-2.2.Q5_K_M.gguf"
 model_name = "Llama-2-13b-chat-german-GGUF.q5_K_M.bin"
-
 
 template0 = """
 <s>[INST] <<SYS>>
@@ -63,7 +61,6 @@ Answer in german language.
 Helpful answer:
 """
 
-
 info_text = """
 Es folgt eine Aufzählung der preußischen Könige mit ihren Geburtstagen und Sterbedaten:
 Friedrich I. wurde am 11. Juli 1657 geboren und verstarb am 25. Februar 1713.
@@ -77,18 +74,61 @@ Friedrich III. wurde am 18. Oktober 1831 geboren und verstarb am 15. Juni 1888.
 Wilhelm II. wurde am 27. Januar 1859 geboren und verstarb am 4. Juni 1941.
 Werner von Alvensleben wurde am 20.7.1840 geboren und verstarb am 19.2.1929.
 """
-def run_step(prompt, question):
 
+
+## Init Llama for Chat
+
+
+class Jarvis:
+    llm = None
+
+    def ask(self, question, prompt, context):
+        time_start = time.time()
+
+        my_prompt = prompt.format(question=question, context=context)
+
+        print("Prompt: %s" % my_prompt)
+        # generate a response
+        output = self.llm(my_prompt,
+                          max_tokens=256,
+                          # stop=["Q:", "\n"],
+                          echo=False,
+                          temperature=0,
+                          top_p=0,
+                          top_k=1,
+                          )
+
+        time_query = time.time() - time_start
+        print("Query executed in %s seconds" % time_query)
+
+        # display the response
+        answer = output["choices"][0]["text"]
+
+        return answer
+
+    def get_llm(self):
+        return self.llm
+
+    def __init__(self):
+        time_start = time.time()
+        print("Loading model: %s" % model_name)
+        # load the large language model file
+        self.llm = Llama(model_path="models/" + model_name,
+                       n_ctx=2048,
+                       n_gpu_layers=n_gpu_layers,
+                       n_batch=n_batch,
+                       verbose=True)
+        time_to_load = time.time() - time_start
+        print("loaded model %s in %s seconds" % (model_name, time_to_load))
+
+
+def run_step(prompt, question, my_llm):
     time_start = time.time()
     print("Prompt: %s" % prompt)
 
     print("Loading model: %s" % model_name)
     # load the large language model file
-    LLM = Llama(model_path="models/" + model_name,
-                n_ctx=2048,
-                n_gpu_layers=n_gpu_layers,
-                n_batch=n_batch,
-                verbose=False)
+    LLM = my_llm
     time_to_load = time.time() - time_start
     print("loaded model %s in %s seconds" % (model_name, time_to_load))
 
@@ -102,7 +142,7 @@ def run_step(prompt, question):
                  top_k=1,
                  )
 
-    time_query= time.time() - time_start - time_to_load
+    time_query = time.time() - time_start - time_to_load
     print("Query executed in %s seconds" % time_query)
 
     # display the response
@@ -120,12 +160,11 @@ def run_step(prompt, question):
     return answer
 
 
-def run_step1(question):
+def run_step1(question, llm):
     prompt = template0.format(question=question)
-    return run_step(prompt, question)
+    return run_step(prompt, question, llm)
 
-def run_step2(question, context):
+
+def run_step2(question, context, llm):
     prompt = template01.format(question=question, context=context)
-    return run_step(prompt, question)
-
-
+    return run_step(prompt, question, llm)
