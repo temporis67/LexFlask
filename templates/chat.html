@@ -157,6 +157,13 @@ Use the following pieces of information to answer the user's question:
               if (counter==10){
                   spass = " nu aba flott ... "
               }
+              if (counter>30 && counter < 41){
+                  spass = " Tja, das dauert wirklich einfach länger ... - aber es ist alles ok. "
+              }
+              if (counter>40 && counter < 50){
+                  spass = " Je grundsätzlicher die Frage, desto schwerer die Antwort. ... "
+              }
+
 
               myInfoElement.textContent = "Bitte warten ... " + spass + " " + counter
               socket.emit( 'still waiting', {
