@@ -1,5 +1,7 @@
 from llama_cpp import Llama
 import time
+from flask_socketio import SocketIO
+import asyncio
 
 # LLM settings for GPU
 n_gpu_layers = 43  # Change this value based on your model and your GPU VRAM pool.
@@ -7,6 +9,7 @@ n_batch = 512  # Should be between 1 and n_ctx, consider the amount of VRAM in y
 
 # model_name = "spicyboros-13b-2.2.Q5_K_M.gguf"
 model_name = "Llama-2-13b-chat-german-GGUF.q5_K_M.bin"
+LOAD_LLM = "ON"
 
 template0 = """
 <s>[INST] <<SYS>>
@@ -78,53 +81,10 @@ Werner von Alvensleben wurde am 20.7.1840 geboren und verstarb am 19.2.1929.
 
 ## Init Llama for Chat
 
-
-class Jarvis:
-    llm = None
-
-    def ask(self, question, prompt, context):
-        time_start = time.time()
-
-        my_prompt = prompt.format(question=question, context=context)
-
-        print("Prompt: %s" % my_prompt)
-        # generate a response
-        output = self.llm(my_prompt,
-                          max_tokens=256,
-                          # stop=["Q:", "\n"],
-                          echo=False,
-                          temperature=0,
-                          top_p=0,
-                          top_k=1,
-                          )
-
-        time_query = time.time() - time_start
-        print("Query executed in %s seconds" % time_query)
-
-        # display the response
-        answer = output["choices"][0]["text"]
-
-        return answer
-
-    def get_llm(self):
-        return self.llm
-
-    def __init__(self):
-        time_start = time.time()
-        print("Loading model: %s" % model_name)
-        # load the large language model file
-        self.llm = Llama(model_path="models/" + model_name,
-                       n_ctx=2048,
-                       n_gpu_layers=n_gpu_layers,
-                       n_batch=n_batch,
-                       verbose=True)
-        time_to_load = time.time() - time_start
-        print("loaded model %s in %s seconds" % (model_name, time_to_load))
-
-
 def run_step(prompt, question, my_llm):
     time_start = time.time()
-    print("Prompt: %s" % prompt)
+    print("** Question1: %s" % question)
+    print("** Prompt1: ", prompt)
 
     print("Loading model: %s" % model_name)
     # load the large language model file

@@ -2,17 +2,74 @@
 
 {% block content %}
 
-        <form action="" method="POST">
-        <div class="container">
+    <h2>{% block title %} Preussen KI Demonstrator {% endblock %}</h2>
+    <p><strong>Chat Mode mit flexiblem Prompt</strong></p>
 
+    <div>
+        <hr/>
+    </div>
 
-          <div class="A1">
-              <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
-              <div class="message_holder"></div>
+         <form action="" method="POST">
+        <div class="chat-container">
+          <div class="chat-messages">
+            <div class="user-chat">
+                <h7>Noch keine Frage gestellt ...</h7>
+                <div class="message_holder"></div>
+            </div>
+            <div class="model-chat">
+                <div class="answer_holder"><h7>Noch keine Antwort. ...</h7></div>
+                <span class="wait_info"></span>
+            </div>
+            </div>
+          <div class="user-input">
+            <div class="user-name">
+                <hr/>
+                <input type="text" class="username" placeholder="Ihr Name" value="Peter"/>
+            </div>
+            <div class="user-question">
+                <hr/>
+                <textarea  class="question" cols="50" rows="3" name="question">Wo liegt Bremen?</textarea>
+                <br/>
+                <input class="user_button" type="submit" value="Fragen"/>
+
+            </div>
+            <div class="sample-questions">
+                <p>Beispiele:</p>
+                <ol>
+                    <li>Wie lautet der volle Name von Werner von Alvensleben?</li>
+                    <li>Wann lebte Werner von Alvensleben?</li>
+                    <li>Wo wurde Werner von Alvensleben geboren?</li>
+                </ol>
+            </div>
           </div>
-            <div class="A2">
 
-                <textarea class="prompt_template" rows="15" cols="50"><s>[INST] <<SYS>>
+    <div>
+        <hr/>
+    </div>
+    <div>
+        <hr/>
+    </div>
+
+
+
+          <div class="user-context">
+              <h6>Context</h6>
+              <p>
+              <textarea  class="prompt_context" rows="8" cols="120">
+                  Hamburg liegt in der Nähe von Bremen. Beide sind ehemalige Hanse-Städte.
+              </textarea></p>
+
+          </div>
+            <div>
+                <hr/>
+            </div>
+
+          <div class="user-prompt-template">
+              <h6>Prompt Instructions</h6>
+              <h8>Using "{context}" and "{question}" from above. Keep syntax - even ' ' and '\n' are influencing the answer.</h8>
+
+              <p><textarea class="prompt_template" rows="8" cols="120">
+<s>[INST] <<SYS>>
 You are a helpful, respectful and honest assistant.
 Always answer as helpfully as possible, while being safe.
 Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content.
@@ -28,39 +85,15 @@ Use the following pieces of information to answer the user's question:
 <</SYS>>
 
 {question}[/INST] This is a answer </s>
-                </textarea>
-                <textarea  class="prompt_context" rows="15" cols="50">Der Name ist  WERNER Ludwig Alvo (Graf) Alvensleben.
-Das Geburtsdatum von  WERNER Ludwig Alvo (Graf) Alvensleben ist 20.7.1840.
-WERNER Ludwig Alvo (Graf) Alvensleben wurde am 20.7.1840  geboren.
-Der Geburtsort von  WERNER Ludwig Alvo (Graf) Alvensleben ist  (Kreis Oschersleben, Sachsen).
-Das Sterbedatum von  WERNER Ludwig Alvo (Graf) Alvensleben ist 19.2.1929 Neugattersleben (Kreis Oschersleben, Sachsen).
-WERNER Ludwig Alvo (Graf) Alvensleben ist am 19.2.1929 Neugattersleben (Kreis Oschersleben, Sachsen) gestorben.
-Der Grundbesitz von  WERNER Ludwig Alvo (Graf) Alvensleben ist Neugattersleben (seit 1869).
-Die Religion von  WERNER Ludwig Alvo (Graf) Alvensleben ist evangelisch.
-                </textarea>
-
-
-
-            </div>
-          <div class="A3">
-              <input type="text" class="username" placeholder="User Name"/>
-              <input type="text" class="message" placeholder="Messages"/>
-              <input type="submit"/>
-
+</textarea>
+              </p>
           </div>
-          <div class="A4">
-              <h4>Antwort</h4>
-              <div class="answer_holder"></div>
-          </div>
-
-
         </div>
+
         </form>
+
     <div>
-        <p>
-        Wie lautet der volle Name von Werner von Alvensleben?
-        Wann lebte Werner von Alvensleben?
-        </p>
+
     </div>
 
 
@@ -70,20 +103,24 @@ Die Religion von  WERNER Ludwig Alvo (Graf) Alvensleben ist evangelisch.
       var socket = io.connect('http://' + document.domain + ':' + location.port);
 
       socket.on( 'connect', function() {
-        socket.emit( 'my event', {
-          data: 'User Connected'
-        } )
+          socket.emit('my event', {
+              data: 'User Connected'
+          })
 
         var form = $( 'form' ).on( 'submit', function( e )
         {
             e.preventDefault()
             let user_name = $( 'input.username' ).val()
-            let user_input = $( 'input.message' ).val()
+            let user_question = $( 'textarea.question' ).val()
             let user_prompt = $( 'textarea.prompt_template' ).val()
             let user_context = $( 'textarea.prompt_context' ).val()
-            socket.emit( 'my event', {
-                message : user_input,
-                prompt : user_prompt, // WTF why is this not in the event load?
+
+            let info_box = document.querySelector('.answer_holder')
+            info_box.textContent = "Verarbeite Frage ... "
+
+            socket.emit( 'new question', {
+                question : user_question,
+                prompt : user_prompt,
                 context : user_context,
                 user_name : user_name
             } )
@@ -91,14 +128,62 @@ Die Religion von  WERNER Ludwig Alvo (Graf) Alvensleben ist evangelisch.
         } )
       } )
 
+      var counter = 0;
+      var status ="wait";
+
+
+      function delay(milliseconds){
+            return new Promise(resolve => {
+                setTimeout(resolve, milliseconds);
+            });
+      }
+
+      socket.on( 'answer ready', async function(msg) {
+          status = "ready"
+          counter = 0
+          my_load = { data:"event 'answer ready' on chat.html got called" }
+          my_load['info'] = 'ok:' + msg
+          socket.emit('my event', my_load)
+      })
+
+      socket.on( 'start waiting', async function(msg) {
+
+          var myInfoElement = document.querySelector('.wait_info');
+          var answer_holder = document.querySelector('.answer_holder');
+          var spass ="";
+          if (counter<100 && status == 'wait'){
+
+              counter = counter +1
+              if (counter==10){
+                  spass = " nu aba flott ... "
+              }
+
+              myInfoElement.textContent = "Bitte warten ... " + spass + " " + counter
+              socket.emit( 'still waiting', {
+                shall_wait: 'Shall wait '
+              })
+          }
+          else {
+              status = "wait"
+              document.querySelector('.wait_info').textContent = ""
+          }
+
+      })
+
       socket.on( 'my response', function( msg ) {
         console.log( msg )
         if( typeof msg.user_name !== 'undefined' ) {
-            $( 'h3' ).remove()
+            $( 'h7' ).remove()
+            let info_box = document.querySelector('.answer_holder')
+            info_box.textContent = ""
             $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
             $( 'div.answer_holder' ).append( '<div><b style="color: #000">Jarvis:</b> '+msg.answer+'</div>' )
+
         }
       })
     </script>
+
+
+
 
 {% endblock %}

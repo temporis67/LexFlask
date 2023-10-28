@@ -1,18 +1,45 @@
-.container {  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+.chat-container {  display: grid;
+  grid-template-columns: 1.4fr;
+  grid-template-rows: auto 0.6fr;
+  grid-auto-rows: 1fr;
   gap: 2px 2px;
   grid-auto-flow: row;
-  grid-template-areas:
-    "A1 A2"
-    "A3 A4";
   width: 100%;
 }
 
-.A1 { grid-area: A1; }
+.chat-messages {  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "user-chat model-chat";
+}
 
-.A2 { grid-area: A2; }
+.user-chat { grid-area: user-chat; }
 
-.A3 { grid-area: A3; }
+.model-chat { grid-area: model-chat; }
 
-.A4 { grid-area: A4; }
+.user-input {  display: grid;
+  grid-template-columns: 0.4fr 1.6fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "user-name user-question"
+    "sample-questions sample-questions";
+}
+
+.user-name { grid-area: user-name; }
+
+.user-question { grid-area: user-question; }
+
+.sample-questions { grid-area: sample-questions; }
+
+.user-context { grid-area: 3 / 1 / 4 / 2; }
+
+.user-prompt-template { grid-area: 4 / 1 / 5 / 2; }
+
+textarea {
+  max-width: 100%;
+}
