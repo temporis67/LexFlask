@@ -155,14 +155,29 @@ Use the following pieces of information to answer the user's question:
 
               counter = counter +1
               if (counter==10){
-                  spass = " nu aba flott ... "
+                  spass = " Nun aber flott ... 🏎 ..."
               }
+              if (counter>15 && counter < 21){
+                  spass = " Es ist korrekt, dass es etwas dauert."
+              }
+              if (counter>23 && counter < 26){
+                  spass = " Wir reizen die Hardware aus."
+              }
+
+
               if (counter>30 && counter < 41){
                   spass = " Tja, das dauert wirklich einfach länger ... - aber es ist alles ok. "
               }
               if (counter>40 && counter < 50){
                   spass = " Je grundsätzlicher die Frage, desto schwerer die Antwort. ... "
               }
+              if (counter>59 && counter < 68){
+                  spass = " Auch mehr als eine Minute muss man manchmal warten. ... "
+              }
+              if (counter>68 && counter < 120){
+                  spass = " Mehr Hardware! Und ATM für ALLE!"
+              }
+
 
 
               myInfoElement.textContent = "Bitte warten ... " + spass + " " + counter
