@@ -9,8 +9,8 @@ n_batch = 512  # Should be between 1 and n_ctx, consider the amount of VRAM in y
 
 # model_name = "spicyboros-13b-2.2.Q5_K_M.gguf"
 model_name = "Llama-2-13b-chat-german-GGUF.q5_K_M.bin"
-LOAD_LLM = "ON"
 
+# this is the prompt without context
 template0 = """
 <s>[INST] <<SYS>>
 You are a helpful, respectful and honest assistant. 
@@ -28,6 +28,7 @@ Please answer in the same language as the user.
 {question}[/INST] This is a answer </s>
 """
 
+# this is the prompt with context
 template01 = """
 <s>[INST] <<SYS>>
 You are a helpful, respectful and honest assistant. 
@@ -46,40 +47,6 @@ Use the following pieces of information to answer the user's question:
 
 {question}[/INST] This is a answer </s>
 """
-
-# prepare the template we will use when prompting the AI
-template2 = """Use the following pieces of information to answer the user's question.
-Act if as if you're responding to documentation questions.
-Context: {context}
-Question: {question}
-Answer in german language.
-Helpful answer:
-"""
-
-template1 = """Use the following pieces of information to answer the user's question.
-Act if as if you're responding to documentation questions.
-Context:
-Question: {question}
-Answer in german language.
-Helpful answer:
-"""
-
-info_text = """
-Es folgt eine Aufzählung der preußischen Könige mit ihren Geburtstagen und Sterbedaten:
-Friedrich I. wurde am 11. Juli 1657 geboren und verstarb am 25. Februar 1713.
-Friedrich Wilhelm I. wurde am 14. August 1688 geboren und verstarb am 31. Mai 1740.
-Friedrich II. wurde am 24. Januar 1712 geboren und verstarb am 17. August 1786.
-Friedrich Wilhelm II. wurde am 25. September 1744 geboren und verstarb am 16. November 1797.
-Friedrich Wilhelm III. wurde am 3. August 1770 geboren und verstarb am 7. Juni 1840.
-Friedrich Wilhelm IV. wurde am 15. Oktober 1795 geboren und verstarb am 2. Januar 1861.
-Wilhelm I. wurde am 22. März 1797 geboren und verstarb am 9. März 1888.
-Friedrich III. wurde am 18. Oktober 1831 geboren und verstarb am 15. Juni 1888.
-Wilhelm II. wurde am 27. Januar 1859 geboren und verstarb am 4. Juni 1941.
-Werner von Alvensleben wurde am 20.7.1840 geboren und verstarb am 19.2.1929.
-"""
-
-
-## Init Llama for Chat
 
 def run_step(prompt, question, my_llm):
     time_start = time.time()
