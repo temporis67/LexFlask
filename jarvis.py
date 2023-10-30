@@ -38,7 +38,7 @@ class Jarvis:
             # print('Warning: LOAD_LLM == "OFF"')
             time.sleep(2)
             # print('Ende jarvis.ask()')
-            return "Bremen liegt am Arsch der Welt."
+            return "Das LLama Modell ist deaktiviert."
 
         time_query = time.time() - time_start
         print("Query executed in %s seconds" % time_query)
