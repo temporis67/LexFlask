@@ -1,6 +1,5 @@
 from llama_cpp import Llama
 import time
-from flask_socketio import SocketIO
 
 # LLM settings for GPU
 n_gpu_layers = 43  # Change this value based on your model and your GPU VRAM pool.
@@ -22,7 +21,7 @@ class Jarvis:
         else:
             prompt2 = question
 
-        print("start jarivs.ask(): %s" % question)
+        # print("start jarvis.ask(): %s" % question)
 
         if LOAD_LLM != "OFF":
             output = self.llm(prompt2,
@@ -33,12 +32,12 @@ class Jarvis:
                               top_p=0,
                               top_k=1,
                               )
-            print("** Answer ready ask(): ", repr(output))
+            # print("** Answer ready ask(): ", repr(output))
 
         else:
             # print('Warning: LOAD_LLM == "OFF"')
-            time.sleep(12)
-            print('Ende jarvis.ask()')
+            time.sleep(2)
+            # print('Ende jarvis.ask()')
             return "Bremen liegt am Arsch der Welt."
 
         time_query = time.time() - time_start
@@ -47,9 +46,6 @@ class Jarvis:
         answer = output["choices"][0]["text"]
 
         return answer
-
-    def get_llm(self):
-        return self.llm
 
     def __init__(self):
         time_start = time.time()

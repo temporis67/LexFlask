@@ -115,7 +115,7 @@ Use the following pieces of information to answer the user's question:
             let user_prompt = $( 'textarea.prompt_template' ).val()
             let user_context = $( 'textarea.prompt_context' ).val()
 
-            let info_box = document.querySelector('.answer_holder')
+            let info_box = document.querySelector('.wait_info')
             info_box.textContent = "Verarbeite Frage ... "
 
             socket.emit( 'new question', {
@@ -149,13 +149,12 @@ Use the following pieces of information to answer the user's question:
       socket.on( 'start waiting', async function(msg) {
 
           var myInfoElement = document.querySelector('.wait_info');
-          var answer_holder = document.querySelector('.answer_holder');
           var spass ="";
           if (counter<100 && status == 'wait'){
 
               counter = counter +1
-              if (counter==10){
-                  spass = " Nun aber flott ... 🏎 ..."
+              if (counter>10 && counter<12){
+                  spass = " Nun aber flott ... 🏇 ..."
               }
               if (counter>15 && counter < 21){
                   spass = " Es ist korrekt, dass es etwas dauert."
@@ -166,17 +165,26 @@ Use the following pieces of information to answer the user's question:
 
 
               if (counter>30 && counter < 41){
-                  spass = " Tja, das dauert wirklich einfach länger ... - aber es ist alles ok. "
+                  spass = " Es ist alles ok. 😎 ...  "
               }
               if (counter>40 && counter < 50){
                   spass = " Je grundsätzlicher die Frage, desto schwerer die Antwort. ... "
               }
-              if (counter>59 && counter < 68){
-                  spass = " Auch mehr als eine Minute muss man manchmal warten. ... "
+
+              if (counter>54 && counter < 56){
+                  spass = " Aber das Warten lohnt sich  ... "
               }
-              if (counter>68 && counter < 120){
+
+              if (counter>59 && counter < 68){
+                  spass = " Auch mehr als eine Minute muss man manchmal warten. 😏 ... "
+              }
+              if (counter>68 && counter < 78){
                   spass = " Mehr Hardware! Und ATM für ALLE!"
               }
+              if (counter>88){
+                  spass = " Solange der Zähler läuft besteht Anlass zur Hoffnung. 😼"
+              }
+
 
 
 
@@ -196,7 +204,7 @@ Use the following pieces of information to answer the user's question:
         console.log( msg )
         if( typeof msg.user_name !== 'undefined' ) {
             $( 'h7' ).remove()
-            let info_box = document.querySelector('.answer_holder')
+            let info_box = document.querySelector('.wait_info')
             info_box.textContent = ""
             $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
             $( 'div.answer_holder' ).append( '<div><b style="color: #000">Jarvis:</b> '+msg.answer+'</div>' )
